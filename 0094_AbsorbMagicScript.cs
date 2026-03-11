@@ -23,12 +23,16 @@ namespace Memoria.AlternateFantasy
 		{
 			if (!_v.Target.CanBeAttacked())
 				return;
-			
-			_v.Target.TryAlterSingleStatus(BattleStatusId.ChangeStat, true, _v.Caster, 0, 6, "Magic", _v.Target.Magic / 2);
+
+			UInt16 drainedAmount = (UInt16)Math.Max(1, _v.Target.Magic16 / 5);
+			UInt16 targetNewMagic = (UInt16)Math.Max(0, _v.Target.Magic16 - drainedAmount);
+
+			_v.Target.TryAlterSingleStatus(BattleStatusId.ChangeStat, true, _v.Caster, 0, 6, "Magic", targetNewMagic);
 			if ((_v.Context.Flags & (BattleCalcFlags.Miss | BattleCalcFlags.Guard)) != 0)
 				return;
-			
-			btl_stat.AlterStatus(_v.Caster, BattleStatusId.ChangeStat, _v.Caster, false, 0, 6, "Magic", Math.Min(UInt16.MaxValue, _v.Caster.Magic16 * 2));
+
+			UInt16 casterNewMagic = (UInt16)Math.Min(999, _v.Caster.Magic16 + drainedAmount);
+			btl_stat.AlterStatus(_v.Caster, BattleStatusId.ChangeStat, _v.Caster, false, 0, 6, "Magic", casterNewMagic);
 		}
 	}
 }
