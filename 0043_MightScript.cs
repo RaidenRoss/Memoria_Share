@@ -26,12 +26,19 @@ namespace Memoria.AlternateFantasy
 				_v.Context.Flags |= BattleCalcFlags.Miss;
 				return;
 			}
-			_v.Target.TryAlterSingleStatus(BattleStatusId.ChangeStat, true, _v.Caster, 0, 6, "Strength", Math.Min(999, _v.Target.Strength16 + _v.Target.Strength16 / _v.Command.Power));
+
+			Int32 power = Math.Max(1, _v.Command.Power);
+			UInt16 amount = (UInt16)Math.Max(1, _v.Target.Strength16 / (4 * power));
+
+			_v.Target.TryAlterSingleStatus(BattleStatusId.ChangeStat, true, _v.Caster, 0, 6, "Strength", Math.Min(999, _v.Target.Strength16 + amount));
 		}
 
 		public Single RateTarget()
 		{
-			return Math.Min(999, _v.Target.Strength16 + _v.Target.Strength16 / _v.Command.Power);
+			Int32 power = Math.Max(1, _v.Command.Power);
+			UInt16 amount = (UInt16)Math.Max(1, _v.Target.Strength16 / (4 * power));
+
+			return Math.Min(999, _v.Target.Strength16 + amount);
 		}
 	}
 }
