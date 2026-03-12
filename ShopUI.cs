@@ -313,7 +313,7 @@ public partial class ShopUI : UIScene
         {
             if (ButtonGroupState.ActiveGroup == ShopUI.SubMenuGroupButton)
             {
-                if (this.TryHandleDevSubMenuConfirm())
+                if (this.TryHandleDevSubMenuConfirm(go))
                     return true;
 
                 this.currentMenu = this.GetSubMenuFromGameObject(go);
@@ -1133,12 +1133,21 @@ public partial class ShopUI : UIScene
             if (this.currentDevCategory == DevMenuCategory.KeyItems)
             {
                 this.confirmItemHud.IconSprite.spriteName = String.Empty;
+                this.confirmItemHud.IconSprite.gameObject.SetActive(false);
                 this.confirmItemHud.NameLabel.rawText = FF9TextTool.ImportantItemName(this.devKeyItemIdList[this.currentItemIndex]);
+                this.confirmPriceLabel.rawText = "-";
+            }
+            else if (this.currentDevCategory == DevMenuCategory.Cards)
+            {
+                this.confirmItemHud.IconSprite.spriteName = String.Empty;
+                this.confirmItemHud.IconSprite.gameObject.SetActive(false);
+                this.confirmItemHud.NameLabel.rawText = FF9TextTool.CardName(this.devCardIdList[this.currentItemIndex]);
                 this.confirmPriceLabel.rawText = "-";
             }
             else
             {
                 FF9UIDataTool.DisplayItem(this.itemIdList[this.currentItemIndex], this.confirmItemHud.IconSprite, this.confirmItemHud.NameLabel, true);
+                this.confirmItemHud.IconSprite.gameObject.SetActive(true);
                 this.confirmPriceLabel.rawText = "-";
             }
 
